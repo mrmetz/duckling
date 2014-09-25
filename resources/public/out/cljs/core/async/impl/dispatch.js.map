@@ -1,6 +1,6 @@
 {"version":3,
  "file":
- "/Users/alex/dev/picsou/resources/public/out/cljs/core/async/impl/dispatch.js",
+ "/Users/parunashvili/Documents/Wit/picsou/resources/public/out/cljs/core/async/impl/dispatch.js",
  "sources":["dispatch.cljs"],
  "lineCount":68,
  "mappings":
@@ -14,6 +14,6 @@
   "cljs.core.async.impl.dispatch/TASK_BATCH_SIZE",
   "cljs.core.async.impl.dispatch/process-messages", "count", "m",
   "cljs.core.async.impl.dispatch/queue-dispatcher",
-  "js/MessageChannel", "msg", "and__3539__auto__", "js/setImmediate",
+  "js/MessageChannel", "msg", "and__3541__auto__", "js/setImmediate",
   "js/setTimeout", "cljs.core.async.impl.dispatch/run", "f",
   "cljs.core.async.impl.dispatch/queue-delay", "delay"]}

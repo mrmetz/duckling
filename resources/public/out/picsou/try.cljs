@@ -21,7 +21,19 @@
     {:phrase "tomorrow at 6am"
      :parse {:rule "rule"
              :route [{:rule "regex"
-                      :text "tomorrow at 6am"}]}}))
+                      :text "tomorrow at 6am"}]}
+     :sections [{:link "try-it-out" :title "Try it out"}
+                {:link "intro" :title "Introduction"}
+                {:link "getting-started" :title "Getting Started"}
+                {:link "workflow" :title "Workflow"}
+                {:link "loading" :title "Loading"}
+                {:link "corpus" :title "Corpus"}
+                {:link "rules" :title "Rules"}
+                {:link "patterns" :title "Patterns"}
+                {:link "production" :title "Production"}
+                {:link "debugging" :title "Debugging"}
+                {:link "faq" :title "FAQ"}
+                ]}))
 
 ;;
 ;; Backend communication
@@ -108,13 +120,13 @@
                                  :clicked "Send"))
           (dom/div nil "Thanks!"))))))
 
-(defn main-view [app owner]
+(defn try-view [app owner]
   (reify
     om/IInitState
     (init-state [_]
       {:text "next week"
        :lang "en$core"
-       :fb (chan)}) ; channel to communicate with feedback component 
+       :fb (chan)}) ; channel to communicate with feedback component
     om/IWillMount
     (will-mount [_]
       (when-let [[_ msg-id] (re-find #"#(.+)$" (.. js/window -location -hash))]
@@ -137,6 +149,49 @@
         (om/build parse-view (:parse app))
         (om/build feedback-view app {:init-state {:fb (:fb state)}})))))
 
-(om/root main-view app-state
-  {:target (. js/document (getElementById "main"))})
 
+(defn nav-item-view [section owner]
+  (reify
+    om/IRender
+    (render [this]
+            (let [link (str "#" (:link section))
+                  title (:title section)]
+              (dom/li nil
+                      (dom/a #js {:href link} title))))))
+
+(defn sidebar-view [app owner]
+  (reify
+    om/IRender
+    (render [this]
+            (dom/div nil
+                     (dom/div #js {:className "sidebar-header"}
+                              (dom/h3 nil
+                                      "Picsou"
+                                      (dom/em nil "v 0.1"))
+                              (dom/a #js {:href "http://github.com/wit-ai/picsou"}
+                                     (dom/i #js {:className "glyphicon glyphicon-chevron-right"} nil)
+                                     "Github Repositorty"))
+                     (dom/nav #js {:className "nav-container"}
+                              (apply dom/ul {:className "nav"}
+                                             (om/build-all nav-item-view (:sections app))))))))
+
+(defn header-view [app owner]
+  (reify
+    om/IRender
+    (render [this]
+            (dom/div nil
+                     (dom/h1 nil "Picsou")
+                     (dom/h3 nil "Parse text into structure data")))))
+
+(om/root sidebar-view app-state
+  {:target (. js/document (getElementById "sidebar"))})
+
+(om/root header-view app-state
+  {:target (. js/document (getElementById "intro-header"))})
+
+(om/root try-view app-state
+  {:target (. js/document (getElementById "try"))})
+
+
+;; @todo: not sure if a lot of render's is the correct way here. I was having trouble
+;; using om/build, to put everything under one component.
