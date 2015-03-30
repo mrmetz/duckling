@@ -73,4 +73,11 @@
             :rules [
                      "ru.numbers"
                     ]}
+ 
+:nl$core {:corpus [
+                    "nl.numbers"
+                   ]
+            :rules [
+                     "nl.numbers"
+                    ]}
  }
